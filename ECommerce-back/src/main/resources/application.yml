@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://snuffleupagus.db.elephantsql.com/jwxijbns
+    username: jwxijbns
+    password: cUoLBsSJxSTswE0s18TS7ZmEeKlmRTV1
+  jpa:
+    hibernate:
+      ddl-auto: none
+debug: true

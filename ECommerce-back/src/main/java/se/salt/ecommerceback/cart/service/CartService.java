@@ -35,4 +35,16 @@ public class CartService {
 
         return new CartResponseDTO(updatedCart.getId(), updatedCart.getCartProducts());
     }
+
+    public CartResponseDTO removeProductFromCart(String cartid, AddCartProductDTO dto) {
+        Product product = productRepo.getById(dto.getProductId());
+        CartProduct cartProduct = new CartProduct(product, dto.getQuantity());
+
+        Cart cart = cartRepo.getById(cartid);
+        cart.removeCartProductFromCart(cartProduct);
+
+        Cart updatedCart = cartRepo.updateCart(cart);
+
+        return new CartResponseDTO(updatedCart.getId(), updatedCart.getCartProducts());
+    }
 }

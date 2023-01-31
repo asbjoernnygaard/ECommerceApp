@@ -37,10 +37,21 @@ public class CartController {
     }
 
     @PreAuthorize("#cartid == principal.username")
-    @PostMapping("/{cartid}")
+    @PostMapping("/{cartid}/addProductToCart")
     ResponseEntity<CartResponseDTO> addCartProductToCart(@PathVariable String cartid, @RequestBody AddCartProductDTO dto){
         try {
             CartResponseDTO cart = service.addCartProductToCart(cartid, dto);
+            return ResponseEntity.ok(cart);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PreAuthorize("#cartid == principal.username")
+    @PostMapping("/{cartid}/removeProductFromCart")
+    ResponseEntity<CartResponseDTO> removeProductFromCart(@PathVariable String cartid, @RequestBody AddCartProductDTO dto){
+        try {
+            CartResponseDTO cart = service.removeProductFromCart(cartid, dto);
             return ResponseEntity.ok(cart);
         } catch (Exception e) {
             return ResponseEntity.notFound().build();

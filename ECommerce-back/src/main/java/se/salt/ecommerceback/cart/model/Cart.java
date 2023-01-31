@@ -9,6 +9,7 @@ import se.salt.ecommerceback.user.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -43,5 +44,25 @@ public class Cart {
                 break;
             }
         }
+    }
+
+    public void removeCartProductFromCart(CartProduct cartProductToBeRemoved) {
+        if(!cartProducts.contains(cartProductToBeRemoved)){
+            return;
+        }
+
+        for (CartProduct cartProduct: cartProducts) {
+            if(cartProduct.equals(cartProductToBeRemoved)){
+                cartProduct.setQuantity(cartProduct.getQuantity() - cartProductToBeRemoved.getQuantity());
+
+                break;
+            }
+        }
+        removeCartProductsWithNoQuantity();
+    }
+
+    private void removeCartProductsWithNoQuantity() {
+        Optional<CartProduct> cartProduct = cartProducts.stream().filter(cp -> cp.getQuantity() < 0).findFirst();
+        cartProduct.ifPresent(product -> cartProducts.remove(product));
     }
 }

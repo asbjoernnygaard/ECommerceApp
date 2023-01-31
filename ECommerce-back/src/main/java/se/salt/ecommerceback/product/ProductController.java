@@ -1,6 +1,7 @@
 package se.salt.ecommerceback.product;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,12 @@ public class ProductController {
 
     @Autowired
     ProductService service;
+
+    @GetMapping
+    public ResponseEntity<Page<Product>> getPaginatedProducts(@RequestParam(defaultValue = "0") String page,
+                                                              @RequestParam(defaultValue = "12") String limit) {
+        return ResponseEntity.ok(service.getPaginatedProducts(Integer.parseInt(page), Integer.parseInt(limit)));
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Product> getById(@PathVariable String id) {

@@ -1,6 +1,9 @@
 package se.salt.ecommerceback.product.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import se.salt.ecommerceback.product.model.Product;
 
@@ -24,5 +27,10 @@ public class ProductRepository {
 
     public void postProducts(List<Product> products) {
         repo.saveAll(products);
+    }
+
+    public Page<Product> getPaginatedProducts(int page, int limit) {
+        Pageable pageable = PageRequest.of(page, limit);
+        return repo.findAll(pageable);
     }
 }

@@ -2,7 +2,10 @@ package se.salt.ecommerceback.user.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import se.salt.ecommerceback.cart.model.Cart;
 import se.salt.ecommerceback.user.model.User;
+
+import java.util.NoSuchElementException;
 
 @Repository
 public class UserRepository {
@@ -15,6 +18,8 @@ public class UserRepository {
     }
 
     public void save(User user) {
-        repo.save(user);
+        User usr1 = repo.save(user);
+        System.out.println(usr1);
     }
+
 }

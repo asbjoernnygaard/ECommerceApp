@@ -1,27 +1,33 @@
 package se.salt.ecommerceback.user.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NonNull;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import se.salt.ecommerceback.cart.model.Cart;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 @Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity(name = "_user")
 public class User implements UserDetails {
 
     @Id
-    String id = UUID.randomUUID().toString();
-    @NonNull String username;
-    @NonNull String password;
+    @NonNull
+    String username;
+
+    @NonNull
+    String password;
 
     @Enumerated(EnumType.STRING)
     @NonNull Role role;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    Cart cart;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

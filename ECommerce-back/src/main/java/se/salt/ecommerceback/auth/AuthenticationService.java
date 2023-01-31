@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import se.salt.ecommerceback.auth.model.AuthenticateRequest;
 import se.salt.ecommerceback.auth.model.AuthenticateResponse;
 import se.salt.ecommerceback.auth.model.NewUserDto;
+import se.salt.ecommerceback.cart.model.Cart;
 import se.salt.ecommerceback.config.JwtService;
 import se.salt.ecommerceback.user.model.Role;
 import se.salt.ecommerceback.user.model.User;
@@ -30,7 +31,15 @@ public class AuthenticationService {
 
     public AuthenticateResponse register(NewUserDto dto) {
         User user = new User(dto.getUsername(), passwordEncoder.encode(dto.getPassword()), Role.USER);
+        System.out.println(user);
+        Cart cart = new Cart();
+        System.out.println(cart);
+        user.setCart(cart);
+        System.out.println(user);
+        cart.setUser(user);
+        System.out.println(cart);
         repo.save(user);
+
         var token = jwtService.generateToken(user);
         return new AuthenticateResponse(token);
     }

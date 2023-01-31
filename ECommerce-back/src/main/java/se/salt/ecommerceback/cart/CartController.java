@@ -3,14 +3,11 @@ package se.salt.ecommerceback.cart;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import se.salt.ecommerceback.cart.model.Cart;
+import se.salt.ecommerceback.cart.model.AddCartProductDTO;
+import se.salt.ecommerceback.cart.model.CartResponseDTO;
 import se.salt.ecommerceback.cart.service.CartService;
-
-import java.net.URI;
-import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/cart")
@@ -30,16 +27,24 @@ public class CartController {
     //Username is also cart_id, they have a OneToOne relationship
     @PreAuthorize("#cartid == principal.username")
     @GetMapping("/{cartid}")
-    ResponseEntity<Cart> getById(@PathVariable String cartid){
-        System.out.println(cartid);
-        System.out.println();
+    ResponseEntity<CartResponseDTO> getById(@PathVariable String cartid){
         try {
-            Cart cart = service.getById(cartid);
+            CartResponseDTO responseDTO = service.getById(cartid);
+            return ResponseEntity.ok(responseDTO);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PreAuthorize("#cartid == principal.username")
+    @PostMapping("/{cartid}")
+    ResponseEntity<CartResponseDTO> addCartProductToCart(@PathVariable String cartid, @RequestBody AddCartProductDTO dto){
+        try {
+            CartResponseDTO cart = service.addCartProductToCart(cartid, dto);
             return ResponseEntity.ok(cart);
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
-
     }
 
 }

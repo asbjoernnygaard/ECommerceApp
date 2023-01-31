@@ -15,4 +15,8 @@ public class CartRepository {
     public Cart getById(String id) {
         return repo.findById(id).orElseThrow(NoSuchElementException::new);
     }
+
+    public Cart updateCart(Cart cart) {
+        return repo.save(cart);
+    }
 }

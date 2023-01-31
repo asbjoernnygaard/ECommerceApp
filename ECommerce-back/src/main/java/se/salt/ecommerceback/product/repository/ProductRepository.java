@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import se.salt.ecommerceback.product.model.Product;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Repository
@@ -19,5 +20,9 @@ public class ProductRepository {
     public void deleteById(String id) {
         Product product = getById(id);
         repo.delete(product);
+    }
+
+    public void postProducts(List<Product> products) {
+        repo.saveAll(products);
     }
 }

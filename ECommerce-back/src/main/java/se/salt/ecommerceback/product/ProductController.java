@@ -4,10 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import se.salt.ecommerceback.product.model.AddProductDTO;
 import se.salt.ecommerceback.product.model.Product;
 import se.salt.ecommerceback.product.service.ProductService;
 import se.salt.ecommerceback.user.model.Role;
 
+import java.net.URI;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
@@ -27,7 +30,14 @@ public class ProductController {
         }
     }
 
-    //
+    // @PreAuthorize("principal.authorities == 'ADMIN'")
+    @PostMapping
+    public ResponseEntity<Void> postProducts(@RequestBody List<AddProductDTO> dtos) {
+        service.postProducts(dtos);
+        return ResponseEntity.created(URI.create("/products/PRODUCT_ID")).build();
+    }
+
+
     @PreAuthorize("principal.authorities == 'ADMIN'")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable String id) {
